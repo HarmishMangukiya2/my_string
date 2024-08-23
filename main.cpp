@@ -38,9 +38,12 @@ class my_string
    friend void struppor(my_string &);
    friend void strlower(my_string &);
 
-   friend my_string strchr(const my_string &,const char);
-   friend my_string strrchr(const my_string &,const char);
-   friend my_string strstr(const my_string &,const my_string &);
+   //friend my_string strchr(const my_string &,const char);
+   friend char *strchr(const my_string &,const char);
+   //friend my_string strrchr(const my_string &,const char);
+   //friend my_string strstr(const my_string &,const my_string &);
+   friend char* strrchr(const my_string &,const char);
+   friend char* strstr(const my_string &,const my_string &);
    friend int strlen(const my_string &);
 };
 
@@ -79,7 +82,7 @@ int main()
     cout<<s7<<endl;
     */
     cout<<"-----------------------"<<endl;
-    my_string s9("harmisa"),s10("harmis");
+/*    my_string s9("harmisa"),s10("harmis");
     cout<<strcmp(s9,s10)<<endl;
     cout<<strncmp(s9,s10,3)<<endl;
     struppor(s9);
@@ -87,7 +90,17 @@ int main()
     strlower(s9);
     cout<<s9<<endl;
     s10=strchr(s9,'r');
-    cout<<s10;
+    cout<<"------"<<endl;
+    cout<<s10<<endl;
+    cout<<strchr(s9,'m')<<endl;
+    */
+    my_string s11("harmiash"),s12("rm"),s13;
+    cout<<strchr(s11,'a')<<endl;
+    cout<<strrchr(s11,'a')<<endl;
+    s13=strstr(s11,s12);
+    cout<<s13<<endl;
+
+
 
 }
 //////////////////////////////////////////
@@ -107,7 +120,14 @@ my_string::my_string(my_string &s)
 }
 my_string::~my_string()
 {
-    delete []p;
+    try
+    {
+    	delete []p;
+    }
+    catch(exception &e)
+    {
+	    cout<<"erorr"<<endl;
+    }
 }
 
 my_string my_string::operator =(const my_string &t)
@@ -389,7 +409,7 @@ void strlower(my_string &t1)
 	}
 }
 
-my_string strchr(const my_string &t1,const char ch)
+/*my_string strchr(const my_string &t1,const char ch)
 {
 	int a1;
 	my_string rev;
@@ -399,19 +419,70 @@ my_string strchr(const my_string &t1,const char ch)
 		{
 			rev.p=t1.p+a1;
 			cout<<rev<<endl;
-			//return rev; 
+			return rev; 
 		}
 	}
 	rev.p=0;
 	return rev;
-}
-/*
-my_string strrchr(my_string &,char)
-{
-}
-my_string strstr(my_string &,my_string &)
-{
-}
-int strlen(my_string &)
-{
 }*/
+char *strchr(const my_string &t1,const char ch)
+{
+	int a1;
+	//my_string rev;
+	for(a1=0;t1.p[a1];a1++)
+	{
+		if(t1.p[a1]==ch)
+		{
+			//rev.p=t1.p+a1;
+			//cout<<rev<<endl;
+			return t1.p+a1; 
+		}
+	}
+	//rev.p=0;
+	return 0;
+}
+
+char* strrchr(const my_string &t,const char ch)
+{
+	int a2;
+	a2=strlen(t);
+	for(a2=a2-1;a2;a2--)
+	{
+		if(t.p[a2]==ch)
+		{
+			return t.p+a2;
+		}
+	}
+	return 0;
+}
+char* strstr(const my_string &t1,const my_string &t2)
+{
+	int a1,a2;
+	char *p,*p1;
+	a2=strlen(t2);
+	while(p=strchr(t1,t2.p[0]))
+	{
+		p1=p;
+		for(a1=1;a1<a2;a1++,p++)
+		{
+			if(*p!=t2.p[a1])
+			{
+				break;
+			}
+		}
+		if(a1==(a2-1))
+		{
+			return p1;
+		}
+	}
+	return 0;
+}
+int strlen(const my_string &t1)
+{
+	int a=0;
+	while(t1.p[a])
+	{
+		a++;
+	}
+	return a;
+}
